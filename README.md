@@ -76,6 +76,7 @@ docker run -d --name courier-management -p 8080:8080 \
   -e DB_USERNAME=root \
   -e DB_PASSWORD=root \
   YOUR_DOCKERHUB_USERNAME/courier-management:latest
+  Docker image link:https://hub.docker.com/r/hemnath05/courier-management-backend?utm_source=chatgpt.com
 
 ## Important
 
