@@ -1,0 +1,71 @@
+services:
+
+  mysql:
+    image: mysql:8.0
+    container_name: courier-mysql
+
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: courier_management
+
+    ports:
+      - "3307:3306"
+
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database:/docker-entrypoint-initdb.d
+
+    networks:
+      - courier-network
+
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+
+  backend:
+    image: hemnath05/courier-management-backend:1.0
+    container_name: courier-backend
+
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: courier_management
+      DB_USERNAME: root
+      DB_PASSWORD: root
+
+    ports:
+      - "8081:8080"
+
+    networks:
+      - courier-network
+
+
+  frontend:
+    build:
+      context: ./frontend
+
+    container_name: courier-frontend
+
+    depends_on:
+      backend:
+        condition: service_started
+
+    ports:
+      - "5173:80"
+
+    networks:
+      - courier-network
+
+
+networks:
+  courier-network:
+
+volumes:
+  mysql_data:
