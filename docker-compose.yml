@@ -26,7 +26,7 @@ services:
 
 
   backend:
-    image: hemnath05/courier-management-backend:1.0
+    image: mjayashree08/courier-management-backend:1.0
     container_name: courier-backend
 
     depends_on:
@@ -48,9 +48,7 @@ services:
 
 
   frontend:
-    build:
-      context: ./frontend
-
+    image: mjayashree08/courier-management-frontend:1.0
     container_name: courier-frontend
 
     depends_on:
